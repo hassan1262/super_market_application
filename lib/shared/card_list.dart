@@ -16,11 +16,13 @@ class _CardsState extends State<Cards> {
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
+        // or Gesture detector
         onTap: () {
           Navigator.pushNamed(
             context,
             '/products',
             arguments: {'categoryName': this.widget.categoryName},
+            // pass argument when going to the next screen
           );
         },
         child: Stack(

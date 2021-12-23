@@ -102,7 +102,9 @@ class _SignUpState extends State<SignUp> {
                       height: 10.0,
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/');
+                      },
                       child: Text(
                         'Sign up',
                         style: TextStyle(

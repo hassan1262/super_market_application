@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'constants.dart';
 
 // ignore: must_be_immutable
@@ -31,7 +30,6 @@ class CartItem extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(width: 12.0),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

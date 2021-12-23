@@ -28,18 +28,6 @@ class SideBar extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Sign in'),
-            onTap: () {
-              Navigator.pushNamed(context, '/signin');
-            },
-          ),
-          ListTile(
-            title: const Text('Sign up'),
-            onTap: () {
-              Navigator.pushNamed(context, '/signup');
-            },
-          ),
-          ListTile(
             title: const Text('Edit Profile'),
             onTap: () {
               Navigator.pushNamed(context, '/editprofile');
