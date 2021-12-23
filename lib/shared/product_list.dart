@@ -51,7 +51,6 @@ class _ProductItemState extends State<ProductItem> {
               ),
             ],
           ),
-          SizedBox(width: 12.0),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
