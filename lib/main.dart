@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:super_market_application/providers/product_provider.dart';
+import 'package:super_market_application/screens/about.dart';
+import 'package:super_market_application/screens/admin_add_product.dart';
+import 'package:super_market_application/screens/cart.dart';
 import 'package:super_market_application/screens/edit_profile.dart';
+import 'package:super_market_application/screens/favourite.dart';
+import 'package:super_market_application/screens/faq.dart';
 import 'package:super_market_application/screens/home.dart';
 import 'package:super_market_application/screens/product.dart';
 import 'package:super_market_application/screens/signin.dart';
@@ -15,19 +22,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Super Market ',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => Home(),
-        '/signin': (context) => SignIn(),
-        '/signup': (context) => SignUp(),
-        '/editprofile': (context) => EditProfile(),
-        '/products': (context) => ProductView(),
-      },
-      theme: ThemeData(
-        scaffoldBackgroundColor: offWhite,
+    return ChangeNotifierProvider(
+      create: (context) => ProductProviders(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Super Market Application',
+        initialRoute: '/faq',
+        routes: {
+          '/': (context) => Home(),
+          '/signin': (context) => SignIn(),
+          '/signup': (context) => SignUp(),
+          '/editprofile': (context) => EditProfile(),
+          '/products': (context) => ProductView(),
+          '/cart': (context) => Cart(),
+          '/fav': (context) => Favourite(),
+          '/add_product': (context) => AddProduct(),
+          '/faq': (context) => FAQ(),
+          '/about': (context) => About(),
+        },
+        theme: ThemeData(
+          scaffoldBackgroundColor: offWhite,
+        ),
       ),
     );
   }
