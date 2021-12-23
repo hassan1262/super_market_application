@@ -4,6 +4,7 @@ import 'package:super_market_application/shared/product_list.dart';
 import 'package:super_market_application/shared/search_bar.dart';
 import 'package:super_market_application/shared/side_menu_bar.dart';
 
+// ignore: must_be_immutable
 class ProductView extends StatelessWidget {
   ProductView({Key? key}) : super(key: key);
   dynamic arguments;
@@ -21,10 +22,12 @@ class ProductView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         children: [
           SearchBar(),
-          const SizedBox(height: 10.0),
-          ProductItem('mango.jpeg', 'Mango', 25.0),
-          ProductItem('banana.jpeg', 'Banana', 15.0),
-          ProductItem('apple.jpeg', 'Apple', 20.0),
+          const SizedBox(
+            height: 10.0,
+          ),
+          ProductItem('mango.jpeg', 'Mango', 25.0, false, 1),
+          ProductItem('banana.jpeg', 'Banana', 15.0, false, 1),
+          ProductItem('apple.jpeg', 'Apple', 20.0, false, 1),
         ],
       ),
     );
