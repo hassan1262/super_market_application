@@ -53,6 +53,9 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: [
                     TextFormField(
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter an email' : null,
+                      onChanged: (val) {},
                       decoration: textInputDecoration.copyWith(
                         hintText: 'Email',
                         hintStyle: TextStyle(
@@ -68,6 +71,9 @@ class _SignUpState extends State<SignUp> {
                       height: 15.0,
                     ),
                     TextFormField(
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter a password' : null,
+                      onChanged: (val) {},
                       decoration: textInputDecoration.copyWith(
                         hintText: 'Password',
                         hintStyle: TextStyle(
@@ -83,6 +89,9 @@ class _SignUpState extends State<SignUp> {
                       height: 15.0,
                     ),
                     TextFormField(
+                      validator: (val) =>
+                          val!.isEmpty ? 'Enter phone number' : null,
+                      onChanged: (val) {},
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                       ],
@@ -103,7 +112,14 @@ class _SignUpState extends State<SignUp> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/');
+                        if (_formkey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Processing Data'),
+                            ),
+                          );
+                          Navigator.pushNamed(context, '/');
+                        }
                       },
                       child: Text(
                         'Sign up',

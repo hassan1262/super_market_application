@@ -2,14 +2,33 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 // ignore: must_be_immutable
-class CartItem extends StatelessWidget {
+class CartItem extends StatefulWidget {
   late String image;
   late String name;
   late double price;
-  CartItem(this.image, this.name, this.price);
+  int quantity;
+  CartItem(this.image, this.name, this.price, this.quantity);
 
   @override
+  _CartItemState createState() => _CartItemState();
+}
+
+class _CartItemState extends State<CartItem> {
+  @override
   Widget build(BuildContext context) {
+    void _incrementCounter() {
+      setState(() {
+        this.widget.quantity++;
+      });
+    }
+
+    void _decrementCounter() {
+      setState(() {
+        if (this.widget.quantity == 1) return;
+        this.widget.quantity--;
+      });
+    }
+
     return Card(
       elevation: 5.0,
       color: offWhite,
@@ -23,7 +42,7 @@ class CartItem extends StatelessWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/${this.image}'),
+                    image: AssetImage('assets/${this.widget.image}'),
                     fit: BoxFit.fill,
                   ),
                 ),
@@ -40,7 +59,7 @@ class CartItem extends StatelessWidget {
                     Container(
                       width: 150.0,
                       child: Text(
-                        '${this.name}',
+                        '${this.widget.name}',
                         style: TextStyle(
                           fontSize: fontSizeM,
                         ),
@@ -61,7 +80,7 @@ class CartItem extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  '${this.price} L.E',
+                  '${this.widget.price} L.E',
                   style: TextStyle(
                     color: green,
                     fontSize: fontSizeM,
@@ -73,7 +92,9 @@ class CartItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _decrementCounter();
+                        },
                         icon: Icon(
                           Icons.remove,
                           color: green,
@@ -81,14 +102,16 @@ class CartItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '1',
+                        '${this.widget.quantity}',
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _incrementCounter();
+                        },
                         icon: Icon(
                           Icons.add,
                           color: green,

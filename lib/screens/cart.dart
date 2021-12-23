@@ -22,9 +22,9 @@ class Cart extends StatelessWidget {
         children: [
           SearchBar(),
           const SizedBox(height: 10.0),
-          CartItem('mango.jpeg', 'Mango', 25.0),
-          CartItem('banana.jpeg', 'Banana', 15.0),
-          CartItem('apple.jpeg', 'Apple', 20.0),
+          CartItem('mango.jpeg', 'Mango', 25.0, 1),
+          CartItem('banana.jpeg', 'Banana', 15.0, 1),
+          CartItem('apple.jpeg', 'Apple', 20.0, 1),
           const SizedBox(height: 10.0),
           Container(
             padding: const EdgeInsets.all(15.0),
