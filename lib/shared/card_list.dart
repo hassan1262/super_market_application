@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:super_market_application/shared/constants.dart';
 
-class Cards extends StatelessWidget {
+// ignore: must_be_immutable
+class Cards extends StatefulWidget {
   String? image;
   String? categoryName;
   Cards(this.image, this.categoryName);
 
+  @override
+  _CardsState createState() => _CardsState();
+}
+
+class _CardsState extends State<Cards> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -14,7 +20,7 @@ class Cards extends StatelessWidget {
           Navigator.pushNamed(
             context,
             '/products',
-            arguments: {'categoryName': this.categoryName},
+            arguments: {'categoryName': this.widget.categoryName},
           );
         },
         child: Stack(
@@ -22,7 +28,7 @@ class Cards extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/${this.image}'),
+                  image: AssetImage('assets/${this.widget.image}'),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -32,11 +38,14 @@ class Cards extends StatelessWidget {
               child: Container(
                 color: Colors.black45,
                 width: MediaQuery.of(context).size.width,
-                child: Text(
-                  '${this.categoryName}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: fontSizeM,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${this.widget.categoryName}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fontSizeM,
+                    ),
                   ),
                 ),
               ),
