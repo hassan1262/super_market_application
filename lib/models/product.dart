@@ -1,5 +1,6 @@
 class Product {
   String name;
   String price;
-  Product(this.name, this.price);
+  String category;
+  Product(this.name, this.price, this.category);
 }

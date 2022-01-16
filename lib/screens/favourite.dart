@@ -21,9 +21,9 @@ class Favourite extends StatelessWidget {
         children: [
           SearchBar(),
           const SizedBox(height: 10.0),
-          ProductItem('mango.jpeg', 'Mango', 25.0, true, 1),
-          ProductItem('banana.jpeg', 'Banana', 15.0, true, 1),
-          ProductItem('apple.jpeg', 'Apple', 20.0, true, 1),
+          // ProductItem('mango.jpeg', 'Mango', 25.0, true, 1),
+          // ProductItem('banana.jpeg', 'Banana', 15.0, true, 1),
+          // ProductItem('apple.jpeg', 'Apple', 20.0, true, 1),
         ],
       ),
     );

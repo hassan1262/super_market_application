@@ -45,12 +45,14 @@ class CardList extends StatelessWidget {
 showAlertDialog(BuildContext context) {
   TextEditingController _name = TextEditingController();
   TextEditingController _price = TextEditingController();
+  TextEditingController _category = TextEditingController();
+
   // Create button
   Widget okButton = TextButton(
     child: Text("ADD"),
     onPressed: () {
       Provider.of<ProductProviders>(context, listen: false)
-          .addProducts(_name.text, _price.text);
+          .addProducts(_name.text, _price.text, _category.text);
       Navigator.of(context).pop();
     },
   );
@@ -58,8 +60,7 @@ showAlertDialog(BuildContext context) {
   // Create AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text("ADD A Product "),
-    content: Column(
-      mainAxisSize: MainAxisSize.min,
+    content: ListView(
       children: [
         TextField(
           controller: _name,
@@ -68,6 +69,10 @@ showAlertDialog(BuildContext context) {
         TextField(
           controller: _price,
           decoration: InputDecoration(hintText: "Enter Price"),
+        ),
+        TextField(
+          controller: _category,
+          decoration: InputDecoration(hintText: "Enter category"),
         ),
       ],
     ),

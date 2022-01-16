@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Super Market Application',
-        initialRoute: '/signin',
+        initialRoute: '/add_product',
         routes: {
           '/': (context) => Home(),
           '/signin': (context) => SignIn(),

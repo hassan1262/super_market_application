@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:super_market_application/models/product.dart';
 
 import 'constants.dart';
 
 // ignore: must_be_immutable
 class ProductItem extends StatefulWidget {
-  late String image;
-  late String name;
-  late double price;
-  final bool _isFav;
-  int _quantity;
-  ProductItem(this.image, this.name, this.price, this._isFav, this._quantity);
+  // late String image;
+  // late String name;
+  // late double price;
+  final bool _isFav = false;
+  int _quantity = 1;
+  Product data;
+  int index;
+  ProductItem(this.data, this.index);
 
   @override
   _ProductItemState createState() => _ProductItemState();
@@ -31,143 +34,147 @@ class _ProductItemState extends State<ProductItem> {
       });
     }
 
-    return Card(
-      elevation: 5.0,
-      color: offWhite,
-      child: Row(
-        children: [
-          Column(
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3,
-                height: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/${this.widget.image}'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    dynamic arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    if (arguments['categoryName'] == widget.data.category) {
+      return Card(
+        elevation: 5.0,
+        color: offWhite,
+        child: Row(
+          children: [
+            Column(
+              //crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      width: 150.0,
-                      child: Text(
-                        '${this.widget.name}',
-                        style: TextStyle(
-                          fontSize: fontSizeM,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () => showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text(
-                                'Item added to the cart successfully',
-                                style: TextStyle(
-                                  fontSize: fontSizeS,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Remove'),
-                                  child: const Text(
-                                    'Remove',
-                                    style: TextStyle(
-                                      fontSize: fontSizeS,
-                                    ),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    primary: red,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Confirm'),
-                                  child: const Text(
-                                    'Confirm',
-                                    style: TextStyle(
-                                      fontSize: fontSizeS,
-                                    ),
-                                  ),
-                                  style: TextButton.styleFrom(
-                                    primary: green,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          icon: Icon(
-                            Icons.shopping_bag_outlined,
-                            color: green,
-                            size: iconSize,
-                          ),
-                        ),
-                        FavInteraction(this.widget._isFav),
-                      ],
-                    ),
-                  ],
-                ),
-                Text(
-                  '${this.widget.price} L.E',
-                  style: TextStyle(
-                    color: green,
-                    fontSize: fontSizeM,
-                  ),
-                ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          _decrementCounter();
-                        },
-                        icon: Icon(
-                          Icons.remove,
-                          color: green,
-                          size: iconSize,
-                        ),
-                      ),
-                      Text(
-                        '${this.widget._quantity}',
-                        style: TextStyle(
-                          fontSize: fontSizeS,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          _incrementCounter();
-                        },
-                        icon: Icon(
-                          Icons.add,
-                          color: green,
-                          size: iconSize,
-                        ),
-                      ),
-                    ],
+                  width: MediaQuery.of(context).size.width / 3,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/logo.png'),
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 130.0,
+                        child: Text(
+                          '${this.widget.data.name}',
+                          style: TextStyle(
+                            fontSize: fontSizeM,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          IconButton(
+                            onPressed: () => showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text(
+                                  'Item added to the cart successfully',
+                                  style: TextStyle(
+                                    fontSize: fontSizeS,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Remove'),
+                                    child: const Text(
+                                      'Remove',
+                                      style: TextStyle(
+                                        fontSize: fontSizeS,
+                                      ),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      primary: red,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Confirm'),
+                                    child: const Text(
+                                      'Confirm',
+                                      style: TextStyle(
+                                        fontSize: fontSizeS,
+                                      ),
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      primary: green,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            icon: Icon(
+                              Icons.shopping_bag_outlined,
+                              color: green,
+                              size: iconSize,
+                            ),
+                          ),
+                          FavInteraction(this.widget._isFav),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '${this.widget.data.price} L.E',
+                    style: TextStyle(
+                      color: green,
+                      fontSize: fontSizeM,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            _decrementCounter();
+                          },
+                          icon: Icon(
+                            Icons.remove,
+                            color: green,
+                            size: iconSize,
+                          ),
+                        ),
+                        Text(
+                          '${this.widget._quantity}',
+                          style: TextStyle(
+                            fontSize: fontSizeS,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            _incrementCounter();
+                          },
+                          icon: Icon(
+                            Icons.add,
+                            color: green,
+                            size: iconSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    } else
+      return Container();
   }
 }
 

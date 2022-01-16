@@ -7,8 +7,8 @@ class ProductProviders extends ChangeNotifier {
     return products;
   }
 
-  void addProducts(String name, String price) {
-    Product product = new Product(name, price);
+  void addProducts(String name, String price, String category) {
+    Product product = new Product(name, price, category);
     products.add(product);
     notifyListeners();
   }
@@ -16,5 +16,13 @@ class ProductProviders extends ChangeNotifier {
   void removeProducts(int index) {
     products.removeAt(index);
     notifyListeners();
+  }
+
+  int getCatProductCount(String category) {
+    int cnt = 0;
+    for (int i = 0; i < products.length; i++) {
+      if (products[i].category == category) cnt++;
+    }
+    return cnt;
   }
 }
