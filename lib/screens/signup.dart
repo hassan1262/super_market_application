@@ -5,7 +5,7 @@ import 'package:super_market_application/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
-var email, password, phone;
+var email, password, user;
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -142,7 +142,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                     TextFormField(
                       onSaved: (val) {
-                        phone = val;
+                        user = val;
                       },
                       validator: (val) {
                         if (val!.length > 20) {
@@ -170,7 +170,11 @@ class _SignUpState extends State<SignUp> {
                     ElevatedButton(
                       onPressed: () async {
                         var response = await signup();
-                        print(response.user.email);
+                        if (response != null) {
+                          Navigator.of(context).pushReplacementNamed("/signin");
+                        } else {
+                          print("signup failed");
+                        }
                       },
                       child: Text(
                         'Sign up',

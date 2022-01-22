@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         title: 'Super Market Application',
         initialRoute: '/signin',
         routes: {
-          '/': (context) => Home(),
+          '/Home': (context) => Home(),
           '/signin': (context) => SignIn(),
           '/signup': (context) => SignUp(),
           '/editprofile': (context) => EditProfile(),

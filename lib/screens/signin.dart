@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:super_market_application/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+var email, password;
 
 class SignIn extends StatefulWidget {
   @override
@@ -9,6 +12,29 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formkey = GlobalKey<FormState>();
+  SignIn() async {
+    var formdata = _formkey.currentState;
+    if (formdata!.validate()) {
+      formdata.save();
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
+        return userCredential;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          AwesomeDialog(
+              context: context, title: "error", body: Text("wrong email"))
+            ..show();
+        } else if (e.code == 'wrong-password') {
+          AwesomeDialog(
+              context: context, title: "error", body: Text("Wrong password"))
+            ..show();
+        }
+      }
+    } else {
+      print("not valid");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +72,18 @@ class _SignInState extends State<SignIn> {
                 child: Column(
                   children: [
                     TextFormField(
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
-                      onChanged: (val) {},
+                      onSaved: (val) {
+                        email = val;
+                      },
+                      validator: (val) {
+                        if (val!.length > 100) {
+                          return "email is too long";
+                        }
+                        if (val.length < 6) {
+                          return "email is too short";
+                        }
+                        return null;
+                      },
                       decoration: textInputDecoration.copyWith(
                         hintText: 'Email',
                         hintStyle: TextStyle(
@@ -64,9 +99,19 @@ class _SignInState extends State<SignIn> {
                       height: 15.0,
                     ),
                     TextFormField(
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter a password' : null,
-                      onChanged: (val) {},
+                      onSaved: (val) {
+                        password = val;
+                      },
+                      validator: (val) {
+                        if (val!.length > 12) {
+                          return "password is too long";
+                        }
+                        if (val.length < 4) {
+                          return "password is can't be less than 4 ";
+                        }
+                        return null;
+                      },
+                      obscureText: true,
                       decoration: textInputDecoration.copyWith(
                         hintText: 'Password',
                         hintStyle: TextStyle(
@@ -97,23 +142,9 @@ class _SignInState extends State<SignIn> {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        try {
-                          UserCredential userCredential = await FirebaseAuth
-                              .instance
-                              .signInWithEmailAndPassword(
-                                  email: "barry.allen@example.com",
-                                  password: "SuperSecretPassword!");
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            print('No user found for that email.');
-                          } else if (e.code == 'wrong-password') {
-                            print('Wrong password provided for that user.');
-                          }
-                        }
-                        User? user = FirebaseAuth.instance.currentUser;
-
-                        if (user != null && !user.emailVerified) {
-                          await user.sendEmailVerification();
+                        var check = await SignIn();
+                        if (check != null) {
+                          Navigator.of(context).pushReplacementNamed("/Home");
                         }
                       },
                       child: Text(
@@ -193,4 +224,10 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
+}
+
+@override
+Widget build(BuildContext context) {
+  // TODO: implement build
+  throw UnimplementedError();
 }
