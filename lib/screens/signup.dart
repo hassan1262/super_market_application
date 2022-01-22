@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:super_market_application/shared/app_bar.dart';
 import 'package:super_market_application/shared/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
+var email, password, phone;
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -12,6 +16,35 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
+
+  signup() async {
+    var formdata = _formkey.currentState;
+    if (formdata!.validate()) {
+      formdata.save();
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        return userCredential;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          AwesomeDialog(
+              context: context,
+              title: "error",
+              body: Text("password is too weak"))
+            ..show();
+        } else if (e.code == 'email-already-in-use') {
+          AwesomeDialog(
+              context: context,
+              title: "error",
+              body: Text("The account already exists for that email."))
+            ..show();
+        }
+      } catch (e) {
+        print(e);
+      }
+    } else
+      print("not valid");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +86,19 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: [
                     TextFormField(
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
-                      onChanged: (val) {},
-                      decoration: textInputDecoration.copyWith(
+                      onSaved: (val) {
+                        email = val;
+                      },
+                      validator: (val) {
+                        if (val!.length > 100) {
+                          return "email is too long";
+                        }
+                        if (val.length < 6) {
+                          return "email is too short";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(
                           color: green,
@@ -71,10 +113,20 @@ class _SignUpState extends State<SignUp> {
                       height: 15.0,
                     ),
                     TextFormField(
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter a password' : null,
-                      onChanged: (val) {},
-                      decoration: textInputDecoration.copyWith(
+                      onSaved: (val) {
+                        password = val;
+                      },
+                      validator: (val) {
+                        if (val!.length > 12) {
+                          return "password is too long";
+                        }
+                        if (val.length < 4) {
+                          return "password is can't be less than 4 ";
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: TextStyle(
                           color: green,
@@ -89,20 +141,25 @@ class _SignUpState extends State<SignUp> {
                       height: 15.0,
                     ),
                     TextFormField(
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter phone number' : null,
-                      onChanged: (val) {},
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      keyboardType: TextInputType.number,
-                      decoration: textInputDecoration.copyWith(
-                        hintText: 'Phone Number',
+                      onSaved: (val) {
+                        phone = val;
+                      },
+                      validator: (val) {
+                        if (val!.length > 20) {
+                          return "username is too long";
+                        }
+                        if (val.length < 4) {
+                          return "user name is too short";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'username',
                         hintStyle: TextStyle(
                           color: green,
                         ),
                         prefixIcon: Icon(
-                          Icons.phone_android_outlined,
+                          Icons.person_outlined,
                           color: green,
                         ),
                       ),
@@ -111,15 +168,9 @@ class _SignUpState extends State<SignUp> {
                       height: 10.0,
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        if (_formkey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Processing Data'),
-                            ),
-                          );
-                          Navigator.pushNamed(context, '/');
-                        }
+                      onPressed: () async {
+                        var response = await signup();
+                        print(response.user.email);
                       },
                       child: Text(
                         'Sign up',

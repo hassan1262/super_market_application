@@ -12,8 +12,12 @@ import 'package:super_market_application/screens/product.dart';
 import 'package:super_market_application/screens/signin.dart';
 import 'package:super_market_application/screens/signup.dart';
 import 'package:super_market_application/shared/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-main() {
+main() async {
+  //n-make sure en l intialize haslt abbl ma y3ml ay stateful widget
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -27,7 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Super Market Application',
-        initialRoute: '/add_product',
+        initialRoute: '/signin',
         routes: {
           '/': (context) => Home(),
           '/signin': (context) => SignIn(),

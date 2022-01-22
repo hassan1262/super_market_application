@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:super_market_application/shared/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -95,14 +96,24 @@ class _SignInState extends State<SignIn> {
                       height: 5.0,
                     ),
                     ElevatedButton(
-                      onPressed: () {
-                        if (_formkey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Processing Data'),
-                            ),
-                          );
-                          Navigator.pushNamed(context, '/');
+                      onPressed: () async {
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                                  email: "barry.allen@example.com",
+                                  password: "SuperSecretPassword!");
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
+                        User? user = FirebaseAuth.instance.currentUser;
+
+                        if (user != null && !user.emailVerified) {
+                          await user.sendEmailVerification();
                         }
                       },
                       child: Text(
