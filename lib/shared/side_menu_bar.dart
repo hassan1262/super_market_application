@@ -24,7 +24,7 @@ class SideBar extends StatelessWidget {
           ListTile(
             title: const Text('Home'),
             onTap: () {
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamed(context, '/Home');
             },
           ),
           ListTile(

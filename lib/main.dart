@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:super_market_application/providers/product_provider.dart';
@@ -14,10 +15,19 @@ import 'package:super_market_application/screens/signup.dart';
 import 'package:super_market_application/shared/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+bool islogin = true;
+
 main() async {
   //n-make sure en l intialize haslt abbl ma y3ml ay stateful widget
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  var user;
+  user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    islogin = false;
+  } else {
+    islogin = true;
+  }
   runApp(MyApp());
 }
 
@@ -31,7 +41,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Super Market Application',
-        initialRoute: '/signin',
+        home: islogin == false ? SignIn() : Home(),
         routes: {
           '/Home': (context) => Home(),
           '/signin': (context) => SignIn(),

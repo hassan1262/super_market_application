@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:super_market_application/shared/constants.dart';
 
@@ -22,6 +23,14 @@ class TopBar extends StatelessWidget {
       backgroundColor: offWhite,
       elevation: 0.0,
       centerTitle: true,
+      actions: [
+        IconButton(
+            icon: Icon(Icons.exit_to_app_sharp),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushReplacementNamed("/signin");
+            })
+      ],
     );
   }
 }

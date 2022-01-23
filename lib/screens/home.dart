@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:super_market_application/shared/app_bar.dart';
 import 'package:super_market_application/shared/card_list.dart';
@@ -5,9 +6,15 @@ import 'package:super_market_application/shared/constants.dart';
 import 'package:super_market_application/shared/search_bar.dart';
 import 'package:super_market_application/shared/side_menu_bar.dart';
 
+getUserIn() {
+  var user = FirebaseAuth.instance.currentUser;
+  print(user!.email);
+}
+
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    getUserIn();
     return Scaffold(
       drawer: SideBar(),
       appBar: PreferredSize(
