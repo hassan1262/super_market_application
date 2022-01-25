@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:super_market_application/shared/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:super_market_application/screens/db.dart';
 
 var email, password;
 
@@ -12,6 +15,48 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formkey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String phone = '';
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  setPref(String uid, dynamic email) async {
+    try {
+      // print('1 $uid');
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('uid', uid.toString());
+      await prefs.setString('email', email.toString());
+      // print('2 ${uid.toString()}');
+    } catch (e) {
+      print('err ${e.toString()}');
+    }
+  }
+
+  Future signinWithGoogle() async {
+    await _googleSignIn.signOut();
+    // hold entered data
+    final GoogleSignInAccount? googleSignInAccount =
+        await _googleSignIn.signIn();
+    // return auth token
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount!.authentication;
+    final AuthCredential authCredential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken:
+            googleSignInAuthentication.accessToken); // access google services
+
+    UserCredential? userCredential =
+        await _auth.signInWithCredential(authCredential);
+
+    //  User? user = userCredential.user;
+    //await setPref(user!.uid, user.email);
+    //DatabaseService db = DatabaseService(uid: user.uid);
+    //phone = await db.getPhone();
+    // return _userFromFirebaseUser(user);
+    //} catch (e) {
+    //print(e.toString());
+    //return null;
+  }
+
   SignIn() async {
     var formdata = _formkey.currentState;
     if (formdata!.validate()) {
@@ -143,6 +188,7 @@ class _SignInState extends State<SignIn> {
                     ElevatedButton(
                       onPressed: () async {
                         var check = await SignIn();
+
                         if (check != null) {
                           Navigator.of(context).pushReplacementNamed("/Home");
                         }
@@ -178,7 +224,15 @@ class _SignInState extends State<SignIn> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        await signinWithGoogle();
+                        Navigator.pushNamed(context, '/add_product');
+                      } catch (e) {
+                        print('zzz');
+                        return null;
+                      }
+                    },
                     child: Image.asset(
                       'assets/google.png',
                       height: 50,
@@ -224,10 +278,4 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
-}
-
-@override
-Widget build(BuildContext context) {
-  // TODO: implement build
-  throw UnimplementedError();
 }

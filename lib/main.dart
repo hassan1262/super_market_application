@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Super Market Application',
         home: islogin == false ? SignIn() : Home(),
+        initialRoute: '/signin',
         routes: {
           '/Home': (context) => Home(),
           '/signin': (context) => SignIn(),

@@ -46,9 +46,9 @@ class SideBar extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Help'),
+            title: const Text('FAQ'),
             onTap: () {
-              Navigator.pushNamed(context, '/help');
+              Navigator.pushNamed(context, '/faq');
             },
           ),
           ListTile(
