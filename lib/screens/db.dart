@@ -7,14 +7,14 @@ class DatabaseService {
 
   Future<void> savePhone(String number) async {
     await FirebaseFirestore.instance
-        .collection('users')
+        .collection('Users')
         .doc(this.uid)
         .set({'phone number': number});
   }
 
   Future<String> getPhone() async {
     await FirebaseFirestore.instance
-        .collection('users')
+        .collection('Users')
         .doc(this.uid)
         .get()
         .then((value) => _documentSnapshot = value);

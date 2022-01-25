@@ -229,7 +229,7 @@ class _SignInState extends State<SignIn> {
                         await signinWithGoogle();
                         Navigator.pushNamed(context, '/add_product');
                       } catch (e) {
-                        print('zzz');
+                        print('Error');
                         return null;
                       }
                     },
